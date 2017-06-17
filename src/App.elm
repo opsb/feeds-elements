@@ -257,16 +257,7 @@ messageSequence i =
 
 
 firstMessage n =
-    el None
-        [ width <| fill 1
-        , paddingLeft 60
-        , paddingRight 20
-        , paddingTop 10
-        , paddingBottom 20
-        , spacing 10
-        , alignTop
-        , attribute "data-class" "row"
-        ]
+    messageRow
         (column None
             []
             [ row None
@@ -281,7 +272,15 @@ firstMessage n =
 
 
 followingMessage n =
-    row None
+    messageRow
+        (el None
+            [ paddingTop 6, width <| fill 1 ]
+            (message n)
+        )
+
+
+messageRow body =
+    el None
         [ width <| fill 1
         , paddingLeft 60
         , paddingRight 20
@@ -291,10 +290,7 @@ followingMessage n =
         , alignTop
         , attribute "data-class" "row"
         ]
-        [ el None
-            [ paddingTop 6, width <| fill 1 ]
-            (message n)
-        ]
+        body
 
 
 message n =
