@@ -8,23 +8,28 @@ import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
 import Style.Font as Font
-import Style.Transition as Transition
+import Style.Shadow as Shadow
 
 
 type Styles
     = None
+    | Avatar
+    | Chat
     | Container
+    | DiscussionHeader
+    | H3
+    | Inspector
     | Label
+    | Main
+    | MainColumn
+    | MessageBox
+    | Nav
     | Navbar
     | NavLink
+    | Paper
     | SideBar
     | SideBarTitle
-    | Nav
-    | Inspector
-    | MessageBox
-    | Chat
-    | Main
-    | H3
+    | TextArea
 
 
 type Variations
@@ -43,14 +48,19 @@ hex hexValue =
 
 colors =
     { darken = rgba 0 0 0 0.25
+    , darken2 = rgba 33 33 33 0.15
     , mediumGrey = hex "#424242"
     , lightGrey = rgba 158 158 158 1
+    , veryLightGrey = rgba 245 245 245 1
+    , lightestGrey = rgba 250 250 250 1
+    , transparentGrey = rgba 33 33 33 0.15
     , red = rgba 232 90 82 1
     , mauve = rgba 176 161 186 1
     , blue1 = rgba 165 181 191 1
     , blue2 = rgba 171 200 199 1
     , green1 = rgba 184 226 200 1
     , green2 = rgba 191 240 212 1
+    , transparent = rgba 255 255 255 0
     }
 
 
@@ -65,7 +75,7 @@ stylesheet =
             , Color.border Color.lightGrey
             ]
         , style Chat
-            [ Color.background colors.blue1
+            [ Color.background Color.white
             ]
         , style Navbar
             [ Color.background colors.mauve
@@ -76,16 +86,26 @@ stylesheet =
         , style NavLink
             [ Color.text colors.lightGrey
             , Font.size 14
+            , variation Active
+                [ Color.background colors.red
+                , Color.text Color.white
+                , Border.rounded 5
+                , hover
+                    [ Color.background colors.red
+                    , Color.text Color.white
+                    , Border.rounded 5
+                    ]
+                ]
             , hover
                 [ Color.background colors.darken
                 , Border.rounded 5
                 , Color.text Color.white
                 , cursor "pointer"
-                ]
-            , variation Active
-                [ Color.background colors.red
-                , Color.text Color.white
-                , Border.rounded 5
+                , variation Active
+                    [ Color.background colors.red
+                    , Color.text Color.white
+                    , Border.rounded 5
+                    ]
                 ]
             ]
         , style SideBarTitle
@@ -97,9 +117,51 @@ stylesheet =
             [ Color.background colors.green2
             ]
         , style MessageBox
-            [ Color.background colors.blue2 ]
+            [ Color.background colors.lightestGrey
+            , Style.shadows
+                [ Shadow.inset
+                    { offset = ( 0, 6 )
+                    , size = -6
+                    , blur = 5
+                    , color = colors.darken2
+                    }
+                ]
+            ]
+        , style TextArea
+            [ Color.text colors.lightGrey
+            , Color.background colors.transparent
+            , Font.size 14
+            , prop "resize" "none"
+            , pseudo "placeholder"
+                [ Color.text Color.white
+                ]
+            , focus
+                [ Style.prop "outline" "none"
+                ]
+            ]
         , style H3
             [ Font.size 20, Font.weight 400 ]
+        , style MainColumn
+            [ Color.background colors.veryLightGrey ]
+        , style Paper
+            [ Style.shadows
+                [ Shadow.box
+                    { offset = ( 0, 1 )
+                    , size = 0
+                    , blur = 4
+                    , color = colors.transparentGrey
+                    }
+                ]
+            ]
+        , style DiscussionHeader
+            [ Color.background Color.white
+            , Border.bottom 1
+            , Border.solid
+            , Color.border colors.veryLightGrey
+            ]
+        , style Avatar
+            [ prop "border-radius" "50%"
+            ]
         ]
 
 
@@ -117,7 +179,7 @@ main =
 
 
 navbar =
-    el Navbar [ padding 20 ] (text "Navbar")
+    el Paper [ padding 20 ] (text "Navbar")
 
 
 sideBar =
@@ -148,11 +210,24 @@ inspector =
 
 
 body =
-    column None
-        [ alignLeft
-        , width <| fill 1
+    row MainColumn
+        [ width <| fill 1, center ]
+        [ column Paper
+            [ alignLeft
+            , width <| px 720
+            , center
+            ]
+            [ discussionHeader
+            , messages
+            , messageBox
+            ]
         ]
-        [ messages, messageBox ]
+
+
+discussionHeader =
+    avatarFrame DiscussionHeader
+        []
+        (el None [ width <| fill 1 ] (text "Some title"))
 
 
 messages =
@@ -162,19 +237,100 @@ messages =
         , alignLeft
         , yScrollbar
         ]
-        (List.map message <| List.range 1 100)
+        (List.concatMap messageSequence <| steppedRange 4 0 80)
+
+
+messageSequence i =
+    [ firstMessage i ] ++ (List.range 1 3 |> List.map (\j -> followingMessage (i + j)))
+
+
+firstMessage n =
+    row None
+        [ width <| fill 1
+        , paddingLeft 20
+        , paddingRight 20
+        , paddingTop 10
+        , paddingBottom 20
+        , spacing 10
+        ]
+        [ avatar
+        , column None
+            []
+            [ row None
+                []
+                [ el None [] (text "Message title")
+                , el None [] (text "08:00")
+                ]
+            , message n
+            ]
+        ]
+
+
+followingMessage n =
+    row None
+        [ width <| fill 1
+        , paddingLeft 20
+        , paddingRight 20
+        , paddingTop 10
+        , paddingBottom 20
+        , spacing 10
+        , height (px 80)
+        ]
+        [ avatar
+        , el None
+            [ paddingTop 6, width <| fill 1 ]
+            (message n)
+        ]
 
 
 message n =
     el None
-        [ padding 10 ]
+        []
         (text <| "message" ++ toString n)
 
 
 messageBox =
-    el MessageBox
-        [ height <| px 300
-        , width <| fill 1
-        , verticalCenter
+    avatarFrame MessageBox
+        []
+        (textArea TextArea
+            [ width <| fill 1
+            , placeholder "Wisdom, thoughts or just words..."
+            ]
+            "Some text"
+        )
+
+
+avatarFrame style attrs frameBody =
+    row style
+        ([ width <| fill 1
+         , paddingLeft 20
+         , paddingRight 20
+         , paddingTop 10
+         , paddingBottom 20
+         , spacing 10
+         , height (px 80)
+         ]
+            ++ attrs
+        )
+        [ avatar
+        , el None
+            [ paddingTop 6, width <| fill 1 ]
+            frameBody
         ]
-        (text "Message box")
+
+
+avatar =
+    image "http://i.pravatar.cc/30"
+        Avatar
+        [ width (px 30)
+        , height (px 30)
+        ]
+        empty
+
+
+
+-- HELPERS
+
+
+steppedRange stepSize start end =
+    List.range start (end // stepSize) |> List.map ((*) stepSize)
