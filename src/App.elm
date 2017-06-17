@@ -25,8 +25,9 @@ type Styles
     | Main
     | MainColumn
     | MessageBox
-    | MessageUsername
+    | MessageRow
     | MessageTime
+    | MessageUsername
     | Nav
     | Navbar
     | NavLink
@@ -138,6 +139,11 @@ stylesheet =
         , style MessageTime
             [ Font.size 12
             , Color.text colors.lightGrey
+            ]
+        , style MessageRow
+            [ hover
+                [ Color.background colors.lightestGrey
+                ]
             ]
         , style TextArea
             [ Color.text colors.lightGrey
@@ -280,10 +286,10 @@ followingMessage n =
 
 
 messageRow body =
-    el None
+    el MessageRow
         [ width <| fill 1
         , paddingLeft 60
-        , paddingRight 20
+        , paddingRight 45
         , paddingTop 10
         , paddingBottom 20
         , spacing 10
