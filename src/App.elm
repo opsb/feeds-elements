@@ -4,6 +4,7 @@ import Color exposing (Color, rgba)
 import Color.Convert
 import Element exposing (..)
 import Element.Attributes exposing (..)
+import Html.Attributes
 import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
@@ -253,6 +254,7 @@ firstMessage n =
         , paddingBottom 20
         , spacing 10
         , alignTop
+        , attribute "data-class" "row"
         ]
         [ avatar
         , column None

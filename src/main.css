@@ -1,3 +1,7 @@
 .style-elements-root {
   position: fixed;
 }
+
+[data-class='row'] {
+  flex-shrink: 0;
+}
