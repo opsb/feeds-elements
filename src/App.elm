@@ -5,6 +5,7 @@ import Color.Convert
 import Element exposing (..)
 import Element.Attributes exposing (..)
 import Html.Attributes
+import Markdown
 import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
@@ -24,6 +25,8 @@ type Styles
     | Main
     | MainColumn
     | MessageBox
+    | MessageUsername
+    | MessageTime
     | Nav
     | Navbar
     | NavLink
@@ -127,6 +130,14 @@ stylesheet =
                     , color = colors.darken2
                     }
                 ]
+            ]
+        , style MessageUsername
+            [ Font.weight 700
+            , Font.size 13.5
+            ]
+        , style MessageTime
+            [ Font.size 12
+            , Color.text colors.lightGrey
             ]
         , style TextArea
             [ Color.text colors.lightGrey
@@ -260,9 +271,9 @@ firstMessage n =
         , column None
             []
             [ row None
-                []
-                [ el None [] (text "Message title")
-                , el None [] (text "08:00")
+                [ spacing 10, paddingBottom 5 ]
+                [ el MessageUsername [] (text "Message title")
+                , el MessageTime [] (text "08:00am")
                 ]
             , message n
             ]
@@ -290,7 +301,19 @@ followingMessage n =
 message n =
     el None
         []
-        (text <| "message" ++ toString n)
+        (html <|
+            Markdown.toHtml [ Html.Attributes.class "markdown" ] <|
+                trimLeading <|
+                    """
+                    paragraph1
+
+                    paragraph2
+                    """
+        )
+
+
+trimLeading =
+    String.lines >> List.map String.trimLeft >> String.join "\n"
 
 
 messageBox =

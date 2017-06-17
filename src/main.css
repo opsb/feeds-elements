@@ -5,3 +5,9 @@
 [data-class='row'] {
   flex-shrink: 0;
 }
+
+.markdown p {
+  font-size: 14px;
+  color: #616161;
+  margin-bottom: 5px;
+}
