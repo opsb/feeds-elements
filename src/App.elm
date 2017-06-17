@@ -257,9 +257,9 @@ messageSequence i =
 
 
 firstMessage n =
-    row None
+    el None
         [ width <| fill 1
-        , paddingLeft 20
+        , paddingLeft 60
         , paddingRight 20
         , paddingTop 10
         , paddingBottom 20
@@ -267,8 +267,7 @@ firstMessage n =
         , alignTop
         , attribute "data-class" "row"
         ]
-        [ avatar
-        , column None
+        (column None
             []
             [ row None
                 [ spacing 10, paddingBottom 5 ]
@@ -277,22 +276,22 @@ firstMessage n =
                 ]
             , message n
             ]
-        ]
+            |> onLeft [ el None [ alignLeft, paddingRight 10 ] avatar ]
+        )
 
 
 followingMessage n =
     row None
         [ width <| fill 1
-        , paddingLeft 20
+        , paddingLeft 60
         , paddingRight 20
         , paddingTop 10
         , paddingBottom 20
         , spacing 10
-        , height (px 80)
         , alignTop
+        , attribute "data-class" "row"
         ]
-        [ avatar
-        , el None
+        [ el None
             [ paddingTop 6, width <| fill 1 ]
             (message n)
         ]
@@ -303,12 +302,7 @@ message n =
         []
         (html <|
             Markdown.toHtml [ Html.Attributes.class "markdown" ] <|
-                trimLeading <|
-                    """
-                    paragraph1
-
-                    paragraph2
-                    """
+                (lorem ++ paragraphs)
         )
 
 
@@ -335,7 +329,7 @@ avatarFrame style attrs frameBody =
          , paddingTop 10
          , paddingBottom 20
          , spacing 10
-         , height (px 80)
+         , attribute "data-class" "row"
          ]
             ++ attrs
         )
@@ -361,3 +355,16 @@ avatar =
 
 steppedRange stepSize start end =
     List.range start (end // stepSize) |> List.map ((*) stepSize)
+
+
+lorem =
+    "Donec interdum elementum aliquam. Maecenas cursus sem tellus, id elementum elit condimentum eget. Proin quis massa mi. In fermentum risus at quam tristique vestibulum. Quisque convallis odio in sodales euismod. Maecenas convallis nec justo nec facilisis. Nam lobortis sem eget sem consectetur, nec pretium leo dictum. Quisque blandit nibh quis tortor vehicula sodales. Proin non leo non dui dictum rhoncus quis et magna. Quisque in nunc eros. Aliquam erat volutpat. Etiam at efficitur lacus."
+
+
+paragraphs =
+    trimLeading <|
+        """
+        paragraph1
+
+        paragraph2
+        """
