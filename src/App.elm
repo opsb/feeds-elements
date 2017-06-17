@@ -252,6 +252,7 @@ firstMessage n =
         , paddingTop 10
         , paddingBottom 20
         , spacing 10
+        , alignTop
         ]
         [ avatar
         , column None
@@ -275,6 +276,7 @@ followingMessage n =
         , paddingBottom 20
         , spacing 10
         , height (px 80)
+        , alignTop
         ]
         [ avatar
         , el None
