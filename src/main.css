@@ -2,7 +2,7 @@
   position: fixed;
 }
 
-[data-class='row'] {
+[data-class='flex-fix'] {
   flex-shrink: 0 !important;
 }
 

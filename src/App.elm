@@ -18,6 +18,7 @@ type Styles
     | Avatar
     | Chat
     | Container
+    | DayTitle
     | DiscussionHeader
     | H3
     | Inspector
@@ -54,7 +55,8 @@ hex hexValue =
 colors =
     { darken = rgba 0 0 0 0.25
     , darken2 = rgba 33 33 33 0.15
-    , mediumGrey = hex "#424242"
+    , mediumGrey = rgba 66 66 66 1
+    , mediumGrey2 = rgba 97 97 97 1
     , lightGrey = rgba 158 158 158 1
     , veryLightGrey = rgba 245 245 245 1
     , lightestGrey = rgba 250 250 250 1
@@ -180,6 +182,17 @@ stylesheet =
         , style Avatar
             [ prop "border-radius" "50%"
             ]
+        , style DayTitle
+            [ Color.background Color.white
+            , Color.text colors.mediumGrey2
+            , Font.center
+            , Font.uppercase
+            , Font.size 12
+            , pseudo "after"
+                [ Border.bottom 1
+                , prop "content" "boom"
+                ]
+            ]
         ]
 
 
@@ -236,9 +249,17 @@ body =
             , center
             ]
             [ discussionHeader
-            , messages
+            , scrollPane
             , messageBox
             ]
+        ]
+
+
+scrollPane =
+    column None
+        [ yScrollbar ]
+        [ discussionDay "Day one"
+        , discussionDay "Day two"
         ]
 
 
@@ -248,14 +269,35 @@ discussionHeader =
         (el None [ width <| fill 1 ] (text "Some title"))
 
 
+discussionDay title =
+    column None
+        [ attribute "data-class" "flex-fix" ]
+        [ dayTitle title
+        , messages
+        ]
+
+
+dayTitle title =
+    column None
+        [ attribute "data-class" "flex-fix" ]
+        [ el DayTitle
+            [ width <| fill 1
+            , center
+            , verticalCenter
+            , paddingTop 30
+            , paddingBottom 10
+            ]
+            (text title)
+        ]
+
+
 messages =
     column
         Chat
         [ width <| fill 1
         , alignLeft
-        , yScrollbar
         ]
-        (List.concatMap messageSequence <| steppedRange 4 0 80)
+        (List.concatMap messageSequence <| steppedRange 4 0 20)
 
 
 messageSequence i =
@@ -294,7 +336,7 @@ messageRow body =
         , paddingBottom 20
         , spacing 10
         , alignTop
-        , attribute "data-class" "row"
+        , attribute "data-class" "flex-fix"
         ]
         body
 
@@ -331,7 +373,7 @@ avatarFrame style attrs frameBody =
          , paddingTop 10
          , paddingBottom 20
          , spacing 10
-         , attribute "data-class" "row"
+         , attribute "data-class" "flex-fix"
          ]
             ++ attrs
         )
