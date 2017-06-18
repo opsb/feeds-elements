@@ -16,6 +16,10 @@ type Styles
     | Avatar
     | Chat
     | Container
+    | ConversationCard
+    | ConversationCardResponsesCount
+    | ConversationCardTitle
+    | ConversationOverview
     | DayTitle
     | DiscussionHeader
     | DiscussionHeaderTitle
@@ -30,7 +34,6 @@ type Styles
     | MessageRow
     | MessageTime
     | MessageUsername
-    | ConversationOverview
     | Nav
     | Navbar
     | NavLink
@@ -38,7 +41,6 @@ type Styles
     | SideBar
     | SideBarTitle
     | TextArea
-    | ConversationCard
 
 
 type Variations
@@ -56,8 +58,10 @@ hex hexValue =
 
 
 colors =
-    { darken = rgba 0 0 0 0.25
-    , darken2 = rgba 33 33 33 0.15
+    { darken1 = rgba 0 0 0 0.15
+    , darken2 = rgba 0 0 0 0.25
+    , darken3 = rgba 33 33 33 0.15
+    , darkGrey = rgba 33 33 33 1
     , mediumGrey = rgba 66 66 66 1
     , mediumGrey2 = rgba 97 97 97 1
     , lightGrey = rgba 158 158 158 1
@@ -81,14 +85,28 @@ shadows =
             { offset = ( 0, 6 )
             , size = -6
             , blur = 5
-            , color = colors.darken2
+            , color = colors.darken3
             }
     , insetBottom =
         Shadow.inset
             { offset = ( 0, -6 )
             , size = -6
             , blur = 5
-            , color = colors.darken2
+            , color = colors.darken3
+            }
+    , box =
+        Shadow.box
+            { offset = ( 0, 1 )
+            , size = 0
+            , blur = 4
+            , color = colors.transparentGrey
+            }
+    , deepBox =
+        Shadow.box
+            { offset = ( 0, 2 )
+            , size = 0
+            , blur = 8
+            , color = colors.darken1
             }
     }
 
@@ -126,7 +144,7 @@ stylesheet =
                     ]
                 ]
             , hover
-                [ Color.background colors.darken
+                [ Color.background colors.darken1
                 , Border.rounded 5
                 , Color.text Color.white
                 , cursor "pointer"
@@ -154,6 +172,7 @@ stylesheet =
         , style MessageUsername
             [ Font.weight 700
             , Font.size 13.5
+            , Color.text colors.darkGrey
             ]
         , style MessageTime
             [ Font.size 12
@@ -189,14 +208,7 @@ stylesheet =
         , style MainColumn
             [ Color.background colors.veryLightGrey ]
         , style Paper
-            [ Style.shadows
-                [ Shadow.box
-                    { offset = ( 0, 1 )
-                    , size = 0
-                    , blur = 4
-                    , color = colors.transparentGrey
-                    }
-                ]
+            [ Style.shadows [ shadows.box ]
             ]
         , style DiscussionHeader
             [ Color.background Color.white
@@ -239,5 +251,20 @@ stylesheet =
             ]
         , style ConversationCard
             [ Color.background Color.white
+            , Style.shadows [ shadows.box ]
+            , hover
+                [ Color.background colors.lightestGrey
+                , Style.cursor "pointer"
+                , Style.shadows [ shadows.deepBox ]
+                ]
+            ]
+        , style ConversationCardTitle
+            [ Font.size 20
+            , Font.weight 300
+            , Color.text colors.darkGrey
+            ]
+        , style ConversationCardResponsesCount
+            [ Font.size 12
+            , Color.text colors.mediumGrey2
             ]
         ]

@@ -12,6 +12,7 @@ import Style.Shadow as Shadow
 import Styles exposing (..)
 import Utils exposing ((=>))
 import View.Avatar as Avatar
+import View.Image as Image
 
 
 view =
@@ -37,7 +38,7 @@ discussionHeader =
 
 scrollPane =
     column None
-        [ yScrollbar ]
+        [ yScrollbar, height <| fill 1 ]
         [ conversationAttachments "https://i.guim.co.uk/img/media/1e698be526bf7a2288256d859f95690e5db3599a/2_0_1300_780/master/1300.png?w=1200&h=630&q=55&auto=format&usm=12&fit=crop&crop=faces%2Centropy&bm=normal&ba=bottom%2Cleft&blend64=aHR0cHM6Ly91cGxvYWRzLmd1aW0uY28udWsvMjAxNi8wNS8yNS9vdmVybGF5LWxvZ28tMTIwMC05MF9vcHQucG5n&s=ad2c97aeca6410e9ebfd095ece4f1a8e"
         , conversationAttachments "http://images.techhive.com/images/article/2017/05/digital-disruption_primary4-100720489-large.3x2.jpg"
         , conversationAttachments "http://d1ri6y1vinkzt0.cloudfront.net/media/images/Medium/4c77e705-14c2-4aaa-bf28-25ca5bf89937.jpg?v=-8298800"
@@ -49,7 +50,7 @@ scrollPane =
 conversationAttachments imageSrc =
     row ConversationOverview
         [ attribute "data-class" "flex-fix", padding 20, spacing 20 ]
-        [ el None [ inlineStyle [ "max-width" => "75%", "max-height" => "275px" ] ] (proportionalImage imageSrc)
+        [ el None [ inlineStyle [ "max-width" => "75%", "max-height" => "275px" ] ] (Image.proportional imageSrc)
         , attachmentSummary
         ]
 
@@ -57,7 +58,7 @@ conversationAttachments imageSrc =
 messageAttachments imageSrc =
     row ConversationOverview
         [ attribute "data-class" "flex-fix", spacing 20 ]
-        [ el None [ inlineStyle [ "max-width" => "50%" ] ] (proportionalImage imageSrc)
+        [ el None [ inlineStyle [ "max-width" => "50%" ] ] (Image.proportional imageSrc)
         , attachmentSummary
         ]
 
@@ -68,19 +69,6 @@ attachmentSummary =
         [ el AttachmentTitle [] (text "'Unprecedented public stroke-fest': late-night hosts on Trump's cabinet meeting")
         , paragraph AttachmentSummary [] [ text "Comics, including Stephen Colbert, Trevor Noah and Seth Meyers, took aim at the president’s bizarre inaugural cabinet meeting on Monday" ]
         ]
-
-
-proportionalImage imageSrc =
-    image
-        imageSrc
-        None
-        [ inlineStyle
-            [ "width" => "100%"
-            , "display" => "block"
-            , "height" => "auto"
-            ]
-        ]
-        empty
 
 
 discussionDay title =

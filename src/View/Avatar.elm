@@ -31,3 +31,12 @@ avatar =
         , height (px 30)
         ]
         empty
+
+
+avatarSmall =
+    image "http://i.pravatar.cc/20"
+        Avatar
+        [ width (px 20)
+        , height (px 20)
+        ]
+        empty
