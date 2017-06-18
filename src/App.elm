@@ -312,32 +312,49 @@ discussionHeader =
 scrollPane =
     column None
         [ yScrollbar ]
-        [ conversationOverview "https://i.guim.co.uk/img/media/1e698be526bf7a2288256d859f95690e5db3599a/2_0_1300_780/master/1300.png?w=1200&h=630&q=55&auto=format&usm=12&fit=crop&crop=faces%2Centropy&bm=normal&ba=bottom%2Cleft&blend64=aHR0cHM6Ly91cGxvYWRzLmd1aW0uY28udWsvMjAxNi8wNS8yNS9vdmVybGF5LWxvZ28tMTIwMC05MF9vcHQucG5n&s=ad2c97aeca6410e9ebfd095ece4f1a8e"
-        , conversationOverview "http://images.techhive.com/images/article/2017/05/digital-disruption_primary4-100720489-large.3x2.jpg"
-        , conversationOverview "http://d1ri6y1vinkzt0.cloudfront.net/media/images/Medium/4c77e705-14c2-4aaa-bf28-25ca5bf89937.jpg?v=-8298800"
+        [ conversationAttachments "https://i.guim.co.uk/img/media/1e698be526bf7a2288256d859f95690e5db3599a/2_0_1300_780/master/1300.png?w=1200&h=630&q=55&auto=format&usm=12&fit=crop&crop=faces%2Centropy&bm=normal&ba=bottom%2Cleft&blend64=aHR0cHM6Ly91cGxvYWRzLmd1aW0uY28udWsvMjAxNi8wNS8yNS9vdmVybGF5LWxvZ28tMTIwMC05MF9vcHQucG5n&s=ad2c97aeca6410e9ebfd095ece4f1a8e"
+        , conversationAttachments "http://images.techhive.com/images/article/2017/05/digital-disruption_primary4-100720489-large.3x2.jpg"
+        , conversationAttachments "http://d1ri6y1vinkzt0.cloudfront.net/media/images/Medium/4c77e705-14c2-4aaa-bf28-25ca5bf89937.jpg?v=-8298800"
         , discussionDay "Day one"
         , discussionDay "Day two"
         ]
 
 
-conversationOverview imageSrc =
+conversationAttachments imageSrc =
     row ConversationOverview
         [ attribute "data-class" "flex-fix", padding 20, spacing 20 ]
-        [ image
-            imageSrc
-            None
-            [ inlineStyle
-                [ "max-height" => "275px"
-                , "max-width" => "75%"
-                ]
-            ]
-            empty
-        , textLayout None
-            [ spacing 10 ]
-            [ el AttachmentTitle [] (text "'Unprecedented public stroke-fest': late-night hosts on Trump's cabinet meeting")
-            , paragraph AttachmentSummary [] [ text "Comics, including Stephen Colbert, Trevor Noah and Seth Meyers, took aim at the president’s bizarre inaugural cabinet meeting on Monday" ]
+        [ el None [ inlineStyle [ "max-width" => "75%", "max-height" => "275px" ] ] (proportionalImage imageSrc)
+        , attachmentSummary
+        ]
+
+
+messageAttachments imageSrc =
+    row ConversationOverview
+        [ attribute "data-class" "flex-fix", spacing 20 ]
+        [ el None [ inlineStyle [ "max-width" => "50%" ] ] (proportionalImage imageSrc)
+        , attachmentSummary
+        ]
+
+
+attachmentSummary =
+    textLayout None
+        [ spacing 10, inlineStyle [ "flex-shrink" => "10" ] ]
+        [ el AttachmentTitle [] (text "'Unprecedented public stroke-fest': late-night hosts on Trump's cabinet meeting")
+        , paragraph AttachmentSummary [] [ text "Comics, including Stephen Colbert, Trevor Noah and Seth Meyers, took aim at the president’s bizarre inaugural cabinet meeting on Monday" ]
+        ]
+
+
+proportionalImage imageSrc =
+    image
+        imageSrc
+        None
+        [ inlineStyle
+            [ "width" => "100%"
+            , "display" => "block"
+            , "height" => "auto"
             ]
         ]
+        empty
 
 
 discussionDay title =
@@ -372,7 +389,7 @@ messages =
 
 
 messageSequence i =
-    [ firstMessage i, editMessage i ] ++ (List.range 1 3 |> List.map (\j -> followingMessage (i + j)))
+    [ firstMessage i, editMessage i ] ++ (List.range 1 3 |> List.map (\j -> followingMessage (i + j))) ++ [ attachmentsMessage ]
 
 
 firstMessage n =
@@ -405,6 +422,11 @@ editMessage n =
             (textArea TextArea [ width <| fill 1 ] "some blasphemous tomfoolery")
             |> avatarGutter
         )
+
+
+attachmentsMessage =
+    messageRow MessageRow
+        (messageAttachments "https://i.guim.co.uk/img/media/1e698be526bf7a2288256d859f95690e5db3599a/2_0_1300_780/master/1300.png?w=1200&h=630&q=55&auto=format&usm=12&fit=crop&crop=faces%2Centropy&bm=normal&ba=bottom%2Cleft&blend64=aHR0cHM6Ly91cGxvYWRzLmd1aW0uY28udWsvMjAxNi8wNS8yNS9vdmVybGF5LWxvZ28tMTIwMC05MF9vcHQucG5n&s=ad2c97aeca6410e9ebfd095ece4f1a8e")
 
 
 avatarGutter =
