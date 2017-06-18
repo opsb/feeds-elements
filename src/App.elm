@@ -38,6 +38,7 @@ type Styles
     | MessageRow
     | MessageTime
     | MessageUsername
+    | ConversationOverview
     | Nav
     | Navbar
     | NavLink
@@ -237,6 +238,9 @@ stylesheet =
             , Font.size 12
             , Font.lineHeight 1.5
             ]
+        , style ConversationOverview
+            [ Color.background Color.white
+            ]
         ]
 
 
@@ -308,17 +312,19 @@ discussionHeader =
 scrollPane =
     column None
         [ yScrollbar ]
-        [ conversationOverview
+        [ conversationOverview "https://i.guim.co.uk/img/media/1e698be526bf7a2288256d859f95690e5db3599a/2_0_1300_780/master/1300.png?w=1200&h=630&q=55&auto=format&usm=12&fit=crop&crop=faces%2Centropy&bm=normal&ba=bottom%2Cleft&blend64=aHR0cHM6Ly91cGxvYWRzLmd1aW0uY28udWsvMjAxNi8wNS8yNS9vdmVybGF5LWxvZ28tMTIwMC05MF9vcHQucG5n&s=ad2c97aeca6410e9ebfd095ece4f1a8e"
+        , conversationOverview "http://images.techhive.com/images/article/2017/05/digital-disruption_primary4-100720489-large.3x2.jpg"
+        , conversationOverview "http://d1ri6y1vinkzt0.cloudfront.net/media/images/Medium/4c77e705-14c2-4aaa-bf28-25ca5bf89937.jpg?v=-8298800"
         , discussionDay "Day one"
         , discussionDay "Day two"
         ]
 
 
-conversationOverview =
-    row None
+conversationOverview imageSrc =
+    row ConversationOverview
         [ attribute "data-class" "flex-fix", padding 20, spacing 20 ]
         [ image
-            "https://i.guim.co.uk/img/media/1e698be526bf7a2288256d859f95690e5db3599a/2_0_1300_780/master/1300.png?w=1200&h=630&q=55&auto=format&usm=12&fit=crop&crop=faces%2Centropy&bm=normal&ba=bottom%2Cleft&blend64=aHR0cHM6Ly91cGxvYWRzLmd1aW0uY28udWsvMjAxNi8wNS8yNS9vdmVybGF5LWxvZ28tMTIwMC05MF9vcHQucG5n&s=ad2c97aeca6410e9ebfd095ece4f1a8e"
+            imageSrc
             None
             [ inlineStyle
                 [ "max-height" => "275px"
