@@ -13,14 +13,21 @@ import Style.Font as Font
 import Style.Shadow as Shadow
 
 
+(=>) a b =
+    ( a, b )
+
+
 type Styles
     = None
+    | AttachmentSummary
+    | AttachmentTitle
     | Avatar
     | Chat
     | Container
     | DayTitle
     | DiscussionHeader
     | EditMessage
+    | EditMessageRow
     | H3
     | Inspector
     | Label
@@ -28,7 +35,6 @@ type Styles
     | MainColumn
     | MessageBox
     | MessageRow
-    | EditMessageRow
     | MessageTime
     | MessageUsername
     | Nav
@@ -63,6 +69,7 @@ colors =
     , veryLightGrey = rgba 245 245 245 1
     , lightestGrey = rgba 250 250 250 1
     , transparentGrey = rgba 33 33 33 0.15
+    , blue = rgba 2 136 209 1
     , red = rgba 232 90 82 1
     , mauve = rgba 176 161 186 1
     , blue1 = rgba 165 181 191 1
@@ -216,6 +223,16 @@ stylesheet =
                 , prop "content" "boom"
                 ]
             ]
+        , style AttachmentTitle
+            [ Color.text colors.blue
+            , Font.size 14
+            , Font.lineHeight 1.4
+            ]
+        , style AttachmentSummary
+            [ Color.text colors.mediumGrey2
+            , Font.size 12
+            , Font.lineHeight 1.5
+            ]
         ]
 
 
@@ -278,18 +295,39 @@ body =
         ]
 
 
-scrollPane =
-    column None
-        [ yScrollbar ]
-        [ discussionDay "Day one"
-        , discussionDay "Day two"
-        ]
-
-
 discussionHeader =
     avatarFrame DiscussionHeader
         []
         (el None [ width <| fill 1 ] (text "Some title"))
+
+
+scrollPane =
+    column None
+        [ yScrollbar ]
+        [ conversationOverview
+        , discussionDay "Day one"
+        , discussionDay "Day two"
+        ]
+
+
+conversationOverview =
+    row None
+        [ attribute "data-class" "flex-fix", padding 20, spacing 20 ]
+        [ image
+            "https://i.guim.co.uk/img/media/1e698be526bf7a2288256d859f95690e5db3599a/2_0_1300_780/master/1300.png?w=1200&h=630&q=55&auto=format&usm=12&fit=crop&crop=faces%2Centropy&bm=normal&ba=bottom%2Cleft&blend64=aHR0cHM6Ly91cGxvYWRzLmd1aW0uY28udWsvMjAxNi8wNS8yNS9vdmVybGF5LWxvZ28tMTIwMC05MF9vcHQucG5n&s=ad2c97aeca6410e9ebfd095ece4f1a8e"
+            None
+            [ inlineStyle
+                [ "max-height" => "275px"
+                , "max-width" => "75%"
+                ]
+            ]
+            empty
+        , textLayout None
+            [ spacing 10 ]
+            [ el AttachmentTitle [] (text "'Unprecedented public stroke-fest': late-night hosts on Trump's cabinet meeting")
+            , paragraph AttachmentSummary [] [ text "Comics, including Stephen Colbert, Trevor Noah and Seth Meyers, took aim at the president’s bizarre inaugural cabinet meeting on Monday" ]
+            ]
+        ]
 
 
 discussionDay title =
