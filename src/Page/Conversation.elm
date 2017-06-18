@@ -10,7 +10,7 @@ import Style.Color as Color
 import Style.Font as Font
 import Style.Shadow as Shadow
 import Styles exposing (..)
-import Utils exposing ((=>))
+import Utils exposing ((=>), flexFix)
 import View.Avatar as Avatar
 import View.Image as Image
 
@@ -49,7 +49,7 @@ scrollPane =
 
 conversationAttachments imageSrc =
     row ConversationOverview
-        [ attribute "data-class" "flex-fix", padding 20, spacing 20 ]
+        [ flexFix, padding 20, spacing 20 ]
         [ el None [ inlineStyle [ "max-width" => "75%", "max-height" => "275px" ] ] (Image.proportional imageSrc)
         , attachmentSummary
         ]
@@ -57,7 +57,7 @@ conversationAttachments imageSrc =
 
 messageAttachments imageSrc =
     row ConversationOverview
-        [ attribute "data-class" "flex-fix", spacing 20 ]
+        [ flexFix, spacing 20 ]
         [ el None [ inlineStyle [ "max-width" => "50%" ] ] (Image.proportional imageSrc)
         , attachmentSummary
         ]
@@ -73,7 +73,7 @@ attachmentSummary =
 
 discussionDay title =
     column None
-        [ attribute "data-class" "flex-fix" ]
+        [ flexFix ]
         [ dayTitle title
         , messages
         ]
@@ -81,7 +81,7 @@ discussionDay title =
 
 dayTitle title =
     column None
-        [ attribute "data-class" "flex-fix" ]
+        [ flexFix ]
         [ el DayTitle
             [ width <| fill 1
             , center
@@ -156,7 +156,7 @@ messageRow style body =
         , paddingBottom 20
         , spacing 10
         , alignTop
-        , attribute "data-class" "flex-fix"
+        , flexFix
         ]
         body
 

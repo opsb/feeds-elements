@@ -3,6 +3,7 @@ module View.Avatar exposing (..)
 import Element exposing (..)
 import Element.Attributes exposing (..)
 import Styles exposing (..)
+import Utils exposing (flexFix)
 
 
 avatarFrame style attrs frameBody =
@@ -13,7 +14,7 @@ avatarFrame style attrs frameBody =
          , paddingTop 10
          , paddingBottom 20
          , spacing 10
-         , attribute "data-class" "flex-fix"
+         , flexFix
          ]
             ++ attrs
         )
