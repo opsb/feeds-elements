@@ -20,6 +20,7 @@ type Styles
     | Container
     | DayTitle
     | DiscussionHeader
+    | EditMessage
     | H3
     | Inspector
     | Label
@@ -27,6 +28,7 @@ type Styles
     | MainColumn
     | MessageBox
     | MessageRow
+    | EditMessageRow
     | MessageTime
     | MessageUsername
     | Nav
@@ -68,6 +70,24 @@ colors =
     , green1 = rgba 184 226 200 1
     , green2 = rgba 191 240 212 1
     , transparent = rgba 255 255 255 0
+    }
+
+
+shadows =
+    { insetTop =
+        Shadow.inset
+            { offset = ( 0, 6 )
+            , size = -6
+            , blur = 5
+            , color = colors.darken2
+            }
+    , insetBottom =
+        Shadow.inset
+            { offset = ( 0, -6 )
+            , size = -6
+            , blur = 5
+            , color = colors.darken2
+            }
     }
 
 
@@ -126,12 +146,7 @@ stylesheet =
         , style MessageBox
             [ Color.background colors.lightestGrey
             , Style.shadows
-                [ Shadow.inset
-                    { offset = ( 0, 6 )
-                    , size = -6
-                    , blur = 5
-                    , color = colors.darken2
-                    }
+                [ shadows.insetTop
                 ]
             ]
         , style MessageUsername
@@ -147,6 +162,14 @@ stylesheet =
                 [ Color.background colors.lightestGrey
                 ]
             ]
+        , style EditMessageRow
+            [ Border.all 0
+            , Color.border Color.blue
+            , Style.shadows [ shadows.insetTop, shadows.insetBottom ]
+            , Color.background colors.lightestGrey
+            ]
+        , style EditMessage
+            []
         , style TextArea
             [ Color.text colors.lightGrey
             , Color.background colors.transparent
@@ -301,11 +324,11 @@ messages =
 
 
 messageSequence i =
-    [ firstMessage i ] ++ (List.range 1 3 |> List.map (\j -> followingMessage (i + j)))
+    [ firstMessage i, editMessage i ] ++ (List.range 1 3 |> List.map (\j -> followingMessage (i + j)))
 
 
 firstMessage n =
-    messageRow
+    messageRow MessageRow
         (column None
             []
             [ row None
@@ -315,20 +338,33 @@ firstMessage n =
                 ]
             , message n
             ]
-            |> onLeft [ el None [ alignLeft, paddingRight 10 ] avatar ]
+            |> avatarGutter
         )
 
 
 followingMessage n =
-    messageRow
+    messageRow MessageRow
         (el None
             [ paddingTop 6, width <| fill 1 ]
             (message n)
         )
 
 
-messageRow body =
-    el MessageRow
+editMessage n =
+    messageRow EditMessageRow
+        (el EditMessage
+            [ width <| fill 1 ]
+            (textArea TextArea [ width <| fill 1 ] "some blasphemous tomfoolery")
+            |> avatarGutter
+        )
+
+
+avatarGutter =
+    onLeft [ el None [ alignLeft, paddingRight 10 ] avatar ]
+
+
+messageRow style body =
+    el style
         [ width <| fill 1
         , paddingLeft 60
         , paddingRight 45
