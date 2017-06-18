@@ -26,6 +26,7 @@ type Styles
     | Container
     | DayTitle
     | DiscussionHeader
+    | DiscussionHeaderTitle
     | EditMessage
     | EditMessageRow
     | H3
@@ -209,6 +210,9 @@ stylesheet =
             , Border.solid
             , Color.border colors.veryLightGrey
             ]
+        , style DiscussionHeaderTitle
+            [ Font.weight 300
+            ]
         , style Avatar
             [ prop "border-radius" "50%"
             ]
@@ -298,7 +302,7 @@ body =
 discussionHeader =
     avatarFrame DiscussionHeader
         []
-        (el None [ width <| fill 1 ] (text "Some title"))
+        (el DiscussionHeaderTitle [ width <| fill 1 ] (text "Some title"))
 
 
 scrollPane =
