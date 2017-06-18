@@ -40,6 +40,7 @@ type Styles
     | Paper
     | SideBar
     | SideBarTitle
+    | Link
     | TextArea
 
 
@@ -215,6 +216,9 @@ stylesheet =
             , Border.bottom 1
             , Border.solid
             , Color.border colors.veryLightGrey
+            , hover
+                [ cursor "pointer"
+                ]
             ]
         , style DiscussionHeaderTitle
             [ Font.weight 300
@@ -266,5 +270,10 @@ stylesheet =
         , style ConversationCardResponsesCount
             [ Font.size 12
             , Color.text colors.mediumGrey2
+            ]
+        , style Link
+            [ hover
+                [ cursor "pointer"
+                ]
             ]
         ]

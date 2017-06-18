@@ -2,8 +2,11 @@ module Page.Conversation exposing (view)
 
 import Element exposing (..)
 import Element.Attributes exposing (..)
+import Element.Events exposing (..)
 import Html.Attributes
 import Markdown
+import Msg exposing (..)
+import Route exposing (Route)
 import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
@@ -32,7 +35,7 @@ view =
 
 discussionHeader =
     Avatar.avatarFrame DiscussionHeader
-        []
+        [ onClick <| NavigateTo Route.Feed ]
         (el DiscussionHeaderTitle [ width <| fill 1 ] (text "Some title"))
 
 

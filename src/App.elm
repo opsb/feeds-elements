@@ -7,10 +7,12 @@ import Element.Attributes exposing (..)
 import Html
 import Html.Attributes
 import Markdown
+import Msg exposing (..)
 import Navigation exposing (Location)
 import Page.Conversation
 import Page.Feed
 import Page.Frame
+import Route exposing (Route)
 import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
@@ -23,24 +25,14 @@ import Styles exposing (..)
     ( a, b )
 
 
-type Page
-    = Feed
-    | Conversation
-    | NotFound
-
-
-type Msg
-    = NavigateTo Page
-
-
 type alias Model =
-    { page : Page
+    { route : Route
     }
 
 
 main : Program Never Model Msg
 main =
-    Navigation.program (pageFromLocation >> NavigateTo)
+    Navigation.program (Route.fromLocation >> SetRoute)
         { init = init
         , update = update
         , view = view
@@ -50,48 +42,36 @@ main =
 
 init : Location -> ( Model, Cmd Msg )
 init =
-    pageFromLocation >> (\page -> ( { page = page }, Cmd.none ))
+    Route.fromLocation >> (\route -> ( { route = route }, Cmd.none ))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        NavigateTo page ->
-            setPage page model
+    case Debug.log "update" msg of
+        NavigateTo route ->
+            ( model, Navigation.newUrl (Route.toUrl route) )
+
+        SetRoute route ->
+            setRoute route model
 
 
-pageFromLocation location =
-    case location.hash of
-        "#feed" ->
-            Feed
-
-        "#conversation" ->
-            Conversation
-
-        "" ->
-            Feed
-
-        _ ->
-            NotFound
-
-
-setPage : Page -> Model -> ( Model, Cmd Msg )
-setPage page model =
-    ( { model | page = page }, Cmd.none )
+setRoute : Route -> Model -> ( Model, Cmd Msg )
+setRoute route model =
+    ( { model | route = route }, Cmd.none )
 
 
 view : Model -> Html.Html Msg
 view model =
     Element.viewport Styles.stylesheet <|
-        case model.page of
-            Feed ->
+        case model.route of
+            Route.Feed ->
                 Page.Frame.view <|
                     Page.Feed.view
 
-            Conversation ->
+            Route.Conversation ->
                 Page.Frame.view <|
                     Page.Conversation.view
 
-            NotFound ->
+            Route.NotFound ->
                 Page.Frame.view <|
                     el None [] (text "not found")

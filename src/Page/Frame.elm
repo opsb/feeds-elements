@@ -2,6 +2,9 @@ module Page.Frame exposing (view)
 
 import Element exposing (..)
 import Element.Attributes exposing (..)
+import Element.Events exposing (..)
+import Msg exposing (..)
+import Route
 import Styles exposing (..)
 import Utils exposing ((=>))
 
@@ -23,8 +26,8 @@ navbar =
         [ padding 20 ]
         (row None
             [ spacing 20 ]
-            [ link "#feed" <| el None [] (text "Feed")
-            , link "#conversation" <| el None [] (text "Conversation")
+            [ el Link [ onClick <| NavigateTo Route.Feed ] (text "Feed")
+            , el Link [ onClick <| NavigateTo Route.Conversation ] (text "Conversation")
             ]
         )
 
@@ -38,10 +41,10 @@ sideBar =
         [ el SideBarTitle [ paddingXY 20 10 ] (text "Topics")
         , column Nav
             [ paddingXY 0 10, width <| fill 1 ]
-            [ el NavLink [ paddingXY 20 10 ] (text "One")
-            , el NavLink [ vary Active True, paddingXY 20 10 ] (text "Two")
-            , el NavLink [ paddingXY 20 10 ] (text "Three")
-            , el NavLink [ paddingXY 20 10 ] (text "Four")
+            [ el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "One")
+            , el NavLink [ vary Active True, paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Two")
+            , el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Three")
+            , el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Four")
             ]
         ]
 

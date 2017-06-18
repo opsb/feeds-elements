@@ -2,6 +2,9 @@ module Page.Feed exposing (view)
 
 import Element exposing (..)
 import Element.Attributes exposing (..)
+import Element.Events exposing (..)
+import Msg exposing (..)
+import Route
 import Styles exposing (..)
 import Utils exposing ((=>), flexFix)
 import View.Avatar as Avatar
@@ -28,7 +31,7 @@ view =
 
 
 conversationCard maybeImage =
-    el ConversationCard [ width <| fill 1 ] <|
+    el ConversationCard [ width <| fill 1, onClick <| NavigateTo Route.Conversation ] <|
         row None
             [ flexFix ]
             (case maybeImage of
@@ -49,7 +52,7 @@ conversationCardDetails =
             [ flexFix, height <| fill 1 ]
             [ row None
                 [ spacing 10, paddingBottom 7, flexFix ]
-                [ el MessageUsername [] (text "Message title")
+                [ el MessageUsername [] (text "Barry Lindon")
                 , el MessageTime [] (text "08:00am")
                 ]
             , el ConversationCardTitle [ height <| fill 1, paddingBottom 20 ] (text "Big title")
