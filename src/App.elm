@@ -4,8 +4,10 @@ import Color exposing (Color, rgba)
 import Color.Convert
 import Element exposing (..)
 import Element.Attributes exposing (..)
+import Html
 import Html.Attributes
 import Markdown
+import Navigation exposing (Location)
 import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
@@ -247,21 +249,99 @@ stylesheet =
         ]
 
 
+type Page
+    = Feed
+    | Conversation
+    | NotFound
+
+
+type Msg
+    = NavigateTo Page
+
+
+type alias Model =
+    { page : Page
+    }
+
+
+main : Program Never Model Msg
 main =
+    Navigation.program (pageFromLocation >> NavigateTo)
+        { init = init
+        , update = update
+        , view = view
+        , subscriptions = always Sub.none
+        }
+
+
+init : Location -> ( Model, Cmd Msg )
+init =
+    pageFromLocation >> (\page -> ( { page = page }, Cmd.none ))
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        NavigateTo page ->
+            setPage page model
+
+
+pageFromLocation location =
+    case location.hash of
+        "#feed" ->
+            Feed
+
+        "#conversation" ->
+            Conversation
+
+        "" ->
+            Feed
+
+        _ ->
+            NotFound
+
+
+setPage : Page -> Model -> ( Model, Cmd Msg )
+setPage page model =
+    ( { model | page = page }, Cmd.none )
+
+
+view : Model -> Html.Html Msg
+view model =
     Element.viewport stylesheet <|
-        column Main
-            [ height <| fill 1 ]
-            [ navbar
-            , row None
-                [ height <| percent 100
-                , width <| fill 1
-                ]
-                [ sideBar, body, inspector ]
-            ]
+        case model.page of
+            Feed ->
+                frame <|
+                    el None [] (text "not implemented")
+
+            Conversation ->
+                frame <|
+                    row None
+                        [ height <| percent 100
+                        , width <| fill 1
+                        ]
+                        [ sideBar, body, inspector ]
+
+            NotFound ->
+                frame <|
+                    el None [] (text "not found")
+
+
+frame body =
+    column Main
+        [ height <| fill 1 ]
+        [ navbar, body ]
 
 
 navbar =
-    el Paper [ padding 20 ] (text "Navbar")
+    el Paper
+        [ padding 20 ]
+        (row None
+            [ spacing 20 ]
+            [ link "#feed" <| el None [] (text "Feed")
+            , link "#conversation" <| el None [] (text "Conversation")
+            ]
+        )
 
 
 sideBar =
