@@ -240,6 +240,9 @@ stylesheet =
             ]
         , style ConversationOverview
             [ Color.background Color.white
+            , hover
+                [ Color.background colors.lightestGrey
+                ]
             ]
         ]
 
