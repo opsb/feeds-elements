@@ -1,4 +1,4 @@
-module Styles exposing (Styles(..), Variations(..), stylesheet)
+module Styles exposing (Icon(..), Styles(..), Variations(..), stylesheet)
 
 import Color exposing (Color, rgba)
 import Color.Convert
@@ -42,10 +42,16 @@ type Styles
     | SideBarTitle
     | Link
     | TextArea
+    | Icon Icon
+
+
+type Icon
+    = Rewind
 
 
 type Variations
     = Active
+    | IconRewind
 
 
 hex : String -> Color
@@ -274,6 +280,12 @@ stylesheet =
         , style Link
             [ hover
                 [ cursor "pointer"
+                ]
+            ]
+        , style (Icon Rewind)
+            [ Font.typeface [ "nova" ]
+            , pseudo ":before"
+                [ prop "content" "'\\f231'"
                 ]
             ]
         ]

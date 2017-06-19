@@ -12,3 +12,14 @@
   margin-bottom: 5px;
   line-height: 21px;
 }
+
+@font-face {
+  font-family: 'Nova';
+  src: url('./assets/fonts/nova.eot');
+  src: url('./assets/fonts/nova.eot?#iefix') format('embedded-opentype'),
+       url('./assets/fonts/nova.woff') format('woff'),
+       url('./assets/fonts/nova.ttf') format('truetype'),
+       url('./assets/fonts/nova.svg#nova') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -7,6 +7,7 @@ import Msg exposing (..)
 import Route
 import Styles exposing (..)
 import Utils exposing ((=>), flexFix)
+import View.Icon as Icon
 
 
 view body =
@@ -41,7 +42,8 @@ sideBar =
         [ el SideBarTitle [ paddingXY 20 10 ] (text "Topics")
         , column Nav
             [ paddingXY 0 10, width <| fill 1 ]
-            [ navLink "One"
+            [ Icon.verticalDots
+            , navLink "One"
             , el NavLink [ vary Active True, paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Two")
             , el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Three")
             , el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Four")
@@ -50,9 +52,9 @@ sideBar =
 
 
 navLink label =
-    el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text label)
+    el NavLink [ paddingXY 20 10, width <| px 200, onClick <| NavigateTo Route.Feed ] (text label)
         |> within
-            [ el None [ alignRight ] (text "menu") ]
+            [ el None [ alignRight, alignTop ] Icon.verticalDots ]
 
 
 inspector =

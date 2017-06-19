@@ -41,8 +41,10 @@ main =
 
 
 init : Location -> ( Model, Cmd Msg )
-init =
-    Route.fromLocation >> (\route -> ( { route = route }, Cmd.none ))
+init location =
+    ( { route = Route.fromLocation location }
+    , Cmd.none
+    )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
