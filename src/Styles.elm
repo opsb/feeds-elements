@@ -121,171 +121,183 @@ shadows =
 stylesheet : StyleSheet Styles Variations
 stylesheet =
     Style.stylesheet
-        [ style None []
-        , style Main [ Font.typeface [ "Lato", "Helvetica Neue", "Helvetica", "Arial", "sans-serif" ] ]
-        , style Container
-            [ Color.text Color.black
-            , Color.background colors.blue2
-            , Color.border Color.lightGrey
+        (List.concat
+            [ kitchenSink
+            , icons
             ]
-        , style Chat
-            [ Color.background Color.white
+        )
+
+
+kitchenSink =
+    [ style None []
+    , style Main [ Font.typeface [ "Lato", "Helvetica Neue", "Helvetica", "Arial", "sans-serif" ] ]
+    , style Container
+        [ Color.text Color.black
+        , Color.background colors.blue2
+        , Color.border Color.lightGrey
+        ]
+    , style Chat
+        [ Color.background Color.white
+        ]
+    , style Navbar
+        [ Color.background colors.mauve
+        ]
+    , style SideBar
+        [ Color.background colors.mediumGrey
+        ]
+    , style NavLink
+        [ Color.text colors.lightGrey
+        , Font.size 14
+        , variation Active
+            [ Color.background colors.red
+            , Color.text Color.white
+            , Border.rounded 5
+            , hover
+                [ Color.background colors.red
+                , Color.text Color.white
+                , Border.rounded 5
+                ]
             ]
-        , style Navbar
-            [ Color.background colors.mauve
-            ]
-        , style SideBar
-            [ Color.background colors.mediumGrey
-            ]
-        , style NavLink
-            [ Color.text colors.lightGrey
-            , Font.size 14
+        , hover
+            [ Color.background colors.darken1
+            , Border.rounded 5
+            , Color.text Color.white
+            , cursor "pointer"
             , variation Active
                 [ Color.background colors.red
                 , Color.text Color.white
                 , Border.rounded 5
-                , hover
-                    [ Color.background colors.red
-                    , Color.text Color.white
-                    , Border.rounded 5
-                    ]
-                ]
-            , hover
-                [ Color.background colors.darken1
-                , Border.rounded 5
-                , Color.text Color.white
-                , cursor "pointer"
-                , variation Active
-                    [ Color.background colors.red
-                    , Color.text Color.white
-                    , Border.rounded 5
-                    ]
-                ]
-            ]
-        , style SideBarTitle
-            [ Color.text Color.white
-            , Font.uppercase
-            , Font.size 12
-            ]
-        , style Inspector
-            [ Color.background colors.green2
-            ]
-        , style MessageBox
-            [ Color.background colors.lightestGrey
-            , Style.shadows
-                [ shadows.insetTop
-                ]
-            ]
-        , style MessageUsername
-            [ Font.weight 700
-            , Font.size 13.5
-            , Color.text colors.darkGrey
-            ]
-        , style MessageTime
-            [ Font.size 12
-            , Color.text colors.lightGrey
-            ]
-        , style MessageRow
-            [ hover
-                [ Color.background colors.lightestGrey
-                ]
-            ]
-        , style EditMessageRow
-            [ Border.all 0
-            , Color.border Color.blue
-            , Style.shadows [ shadows.insetTop, shadows.insetBottom ]
-            , Color.background colors.lightestGrey
-            ]
-        , style EditMessage
-            []
-        , style TextArea
-            [ Color.text colors.lightGrey
-            , Color.background colors.transparent
-            , Font.size 14
-            , prop "resize" "none"
-            , pseudo "placeholder"
-                [ Color.text Color.white
-                ]
-            , focus
-                [ Style.prop "outline" "none"
-                ]
-            ]
-        , style H3
-            [ Font.size 20, Font.weight 400 ]
-        , style MainColumn
-            [ Color.background colors.veryLightGrey ]
-        , style Paper
-            [ Style.shadows [ shadows.box ]
-            ]
-        , style DiscussionHeader
-            [ Color.background Color.white
-            , Border.bottom 1
-            , Border.solid
-            , Color.border colors.veryLightGrey
-            , hover
-                [ cursor "pointer"
-                ]
-            ]
-        , style DiscussionHeaderTitle
-            [ Font.weight 300
-            ]
-        , style Avatar
-            [ prop "border-radius" "50%"
-            ]
-        , style DayTitle
-            [ Color.background Color.white
-            , Color.text colors.mediumGrey2
-            , Font.center
-            , Font.uppercase
-            , Font.size 12
-            , pseudo "after"
-                [ Border.bottom 1
-                , prop "content" "boom"
-                ]
-            ]
-        , style AttachmentTitle
-            [ Color.text colors.blue
-            , Font.size 14
-            , Font.lineHeight 1.4
-            ]
-        , style AttachmentSummary
-            [ Color.text colors.mediumGrey2
-            , Font.size 12
-            , Font.lineHeight 1.5
-            ]
-        , style ConversationOverview
-            [ Color.background Color.white
-            , hover
-                [ Color.background colors.lightestGrey
-                ]
-            ]
-        , style ConversationCard
-            [ Color.background Color.white
-            , Style.shadows [ shadows.box ]
-            , hover
-                [ Color.background colors.lightestGrey
-                , Style.cursor "pointer"
-                , Style.shadows [ shadows.deepBox ]
-                ]
-            ]
-        , style ConversationCardTitle
-            [ Font.size 20
-            , Font.weight 300
-            , Color.text colors.darkGrey
-            ]
-        , style ConversationCardResponsesCount
-            [ Font.size 12
-            , Color.text colors.mediumGrey2
-            ]
-        , style Link
-            [ hover
-                [ cursor "pointer"
-                ]
-            ]
-        , style (Icon Rewind)
-            [ Font.typeface [ "nova" ]
-            , pseudo ":before"
-                [ prop "content" "'\\f231'"
                 ]
             ]
         ]
+    , style SideBarTitle
+        [ Color.text Color.white
+        , Font.uppercase
+        , Font.size 12
+        ]
+    , style Inspector
+        [ Color.background colors.green2
+        ]
+    , style MessageBox
+        [ Color.background colors.lightestGrey
+        , Style.shadows
+            [ shadows.insetTop
+            ]
+        ]
+    , style MessageUsername
+        [ Font.weight 700
+        , Font.size 13.5
+        , Color.text colors.darkGrey
+        ]
+    , style MessageTime
+        [ Font.size 12
+        , Color.text colors.lightGrey
+        ]
+    , style MessageRow
+        [ hover
+            [ Color.background colors.lightestGrey
+            ]
+        ]
+    , style EditMessageRow
+        [ Border.all 0
+        , Color.border Color.blue
+        , Style.shadows [ shadows.insetTop, shadows.insetBottom ]
+        , Color.background colors.lightestGrey
+        ]
+    , style EditMessage
+        []
+    , style TextArea
+        [ Color.text colors.lightGrey
+        , Color.background colors.transparent
+        , Font.size 14
+        , prop "resize" "none"
+        , pseudo "placeholder"
+            [ Color.text Color.white
+            ]
+        , focus
+            [ Style.prop "outline" "none"
+            ]
+        ]
+    , style H3
+        [ Font.size 20, Font.weight 400 ]
+    , style MainColumn
+        [ Color.background colors.veryLightGrey ]
+    , style Paper
+        [ Style.shadows [ shadows.box ]
+        ]
+    , style DiscussionHeader
+        [ Color.background Color.white
+        , Border.bottom 1
+        , Border.solid
+        , Color.border colors.veryLightGrey
+        , hover
+            [ cursor "pointer"
+            ]
+        ]
+    , style DiscussionHeaderTitle
+        [ Font.weight 300
+        ]
+    , style Avatar
+        [ prop "border-radius" "50%"
+        ]
+    , style DayTitle
+        [ Color.background Color.white
+        , Color.text colors.mediumGrey2
+        , Font.center
+        , Font.uppercase
+        , Font.size 12
+        , pseudo "after"
+            [ Border.bottom 1
+            , prop "content" "boom"
+            ]
+        ]
+    , style AttachmentTitle
+        [ Color.text colors.blue
+        , Font.size 14
+        , Font.lineHeight 1.4
+        ]
+    , style AttachmentSummary
+        [ Color.text colors.mediumGrey2
+        , Font.size 12
+        , Font.lineHeight 1.5
+        ]
+    , style ConversationOverview
+        [ Color.background Color.white
+        , hover
+            [ Color.background colors.lightestGrey
+            ]
+        ]
+    , style ConversationCard
+        [ Color.background Color.white
+        , Style.shadows [ shadows.box ]
+        , hover
+            [ Color.background colors.lightestGrey
+            , Style.cursor "pointer"
+            , Style.shadows [ shadows.deepBox ]
+            ]
+        ]
+    , style ConversationCardTitle
+        [ Font.size 20
+        , Font.weight 300
+        , Color.text colors.darkGrey
+        ]
+    , style ConversationCardResponsesCount
+        [ Font.size 12
+        , Color.text colors.mediumGrey2
+        ]
+    , style Link
+        [ hover
+            [ cursor "pointer"
+            ]
+        ]
+    ]
+
+
+icons =
+    [ style (Icon Rewind)
+        [ Font.typeface [ "nova" ]
+        , pseudo ":before"
+            [ prop "content" "'\\f231'"
+            ]
+        ]
+    ]
