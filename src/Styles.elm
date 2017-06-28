@@ -7,6 +7,7 @@ import Style.Border as Border
 import Style.Color as Color
 import Style.Font as Font
 import Style.Shadow as Shadow
+import Utils exposing ((=>))
 
 
 type Styles
@@ -42,16 +43,36 @@ type Styles
     | SideBarTitle
     | Link
     | TextArea
+    | SideBarMenuTrigger
     | Icon Icon
-
-
-type Icon
-    = Rewind
 
 
 type Variations
     = Active
-    | IconRewind
+
+
+type Icon
+    = ShowMoreVertical
+
+
+iconStyles =
+    List.map iconStyle icons
+
+
+iconStyle : ( Icon, String ) -> Style Styles variation
+iconStyle ( tag, content ) =
+    style (Icon tag)
+        [ Font.typeface [ "nova" ]
+        , Color.background Color.charcoal
+        , prop "border-radius" "50%"
+        , pseudo ":before"
+            [ prop "content" content
+            ]
+        ]
+
+
+icons =
+    [ ShowMoreVertical => "'\\ebb9'" ]
 
 
 hex : String -> Color
@@ -86,6 +107,7 @@ colors =
     }
 
 
+shadows : { box : Shadow, insetBottom : Shadow, insetTop : Shadow, deepBox : Shadow }
 shadows =
     { insetTop =
         Shadow.inset
@@ -123,7 +145,7 @@ stylesheet =
     Style.stylesheet
         (List.concat
             [ kitchenSink
-            , icons
+            , iconStyles
             ]
         )
 
@@ -174,6 +196,9 @@ kitchenSink =
         [ Color.text Color.white
         , Font.uppercase
         , Font.size 12
+        ]
+    , style SideBarMenuTrigger
+        [ Color.background Color.charcoal
         ]
     , style Inspector
         [ Color.background colors.green2
@@ -288,16 +313,6 @@ kitchenSink =
     , style Link
         [ hover
             [ cursor "pointer"
-            ]
-        ]
-    ]
-
-
-icons =
-    [ style (Icon Rewind)
-        [ Font.typeface [ "nova" ]
-        , pseudo ":before"
-            [ prop "content" "'\\f231'"
             ]
         ]
     ]

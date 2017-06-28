@@ -42,8 +42,7 @@ sideBar =
         [ el SideBarTitle [ paddingXY 20 10 ] (text "Topics")
         , column Nav
             [ paddingXY 0 10, width <| fill 1 ]
-            [ Icon.verticalDots
-            , navLink "One"
+            [ navLink "One"
             , el NavLink [ vary Active True, paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Two")
             , el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Three")
             , el NavLink [ paddingXY 20 10, onClick <| NavigateTo Route.Feed ] (text "Four")
@@ -52,9 +51,12 @@ sideBar =
 
 
 navLink label =
-    el NavLink [ paddingXY 20 10, width <| px 200, onClick <| NavigateTo Route.Feed ] (text label)
+    el NavLink [ paddingXY 20 10, width <| fill 1, onClick <| NavigateTo Route.Feed ] (text label)
         |> within
-            [ el None [ alignRight, alignTop ] Icon.verticalDots ]
+            [ el None
+                [ alignRight, verticalCenter, paddingRight 5 ]
+                (Icon.verticalDots [ padding 3 ])
+            ]
 
 
 inspector =
