@@ -21,6 +21,7 @@ import Style.Color as Color
 import Style.Font as Font
 import Style.Shadow as Shadow
 import Styles exposing (..)
+import View.Icon exposing (Icons)
 
 
 (=>) a b =
@@ -30,12 +31,18 @@ import Styles exposing (..)
 type alias Model =
     { route : Route
     , menus : DefaultDict String Bool
+    , icons : Icons
     }
 
 
-main : Program Never Model Msg
+type alias Flags =
+    { icons : Icons
+    }
+
+
+main : Program Flags Model Msg
 main =
-    Navigation.program (Route.fromLocation >> SetRoute)
+    Navigation.programWithFlags (Route.fromLocation >> SetRoute)
         { init = init
         , update = update
         , view = view
@@ -43,9 +50,12 @@ main =
         }
 
 
-init : Location -> ( Model, Cmd Msg )
-init location =
-    ( { route = Route.fromLocation location, menus = DefaultDict.empty False }
+init : Flags -> Location -> ( Model, Cmd Msg )
+init flags location =
+    ( { route = Route.fromLocation location
+      , menus = DefaultDict.empty False
+      , icons = flags.icons
+      }
     , Cmd.none
     )
 

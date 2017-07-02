@@ -56,11 +56,11 @@ sideBar model =
 navLink model label =
     el NavLink [ paddingXY 20 10, width <| fill 1, onClick <| NavigateTo Route.Feed ] (text label)
         |> within
-            [ dropdownMenu { onToggle = ToggleMenu label } (DefaultDict.get label model.menus)
+            [ dropdownMenu { onToggle = ToggleMenu label } (DefaultDict.get label model.menus) model.icons
             ]
 
 
-dropdownMenu { onToggle } isOpen =
+dropdownMenu { onToggle } isOpen icons =
     el None
         [ alignRight, verticalCenter, paddingRight 5, onClickNoProp onToggle ]
         (el DropdownTrigger [ padding 3 ] empty)
@@ -75,7 +75,7 @@ dropdownMenu { onToggle } isOpen =
                         , inlineStyle [ "white-space" => "nowrap" ]
                         , minWidth (px 150)
                         ]
-                        [ Icon.pencil2 DropdownMenuIcon [], el None [ paddingLeft 5 ] (text "Edit") ]
+                        [ Icon.icon2 icons.pencil1 DropdownMenuIcon [], el None [ paddingLeft 5 ] (text "Edit") ]
                     ]
             , when isOpen <|
                 screenCover

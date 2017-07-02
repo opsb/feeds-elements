@@ -57,26 +57,6 @@ type Variations
     = Active
 
 
-
---type Icon
---    = ShowMoreVertical
---    | Pencil1
---    | EcoThrowTrash
---iconStyles =
---    List.map iconStyle icons
---iconStyle : ( Icon, String ) -> Style Styles variation
---iconStyle ( tag, content ) =
---    style (Icon tag)
---        [ Font.typeface [ "nova" ]
---        , Color.background Color.charcoal
---        , Color.text colors.mediumGrey
---        , prop "border-radius" "50%"
---        , pseudo ":before"
---            [ prop "content" content
---            ]
---        ]
-
-
 icons =
     { showMoreVertical = "'\\ebb9'"
     , pencil1 = "'\\e90e'"
