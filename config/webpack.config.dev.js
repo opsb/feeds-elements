@@ -6,6 +6,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const getClientEnvironment = require('./env')
 const configPaths = require('../config/paths')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -146,6 +147,10 @@ module.exports = {
 
     new HotModuleReplacementPlugin(),
 
-    new NamedModulesPlugin()
+    new NamedModulesPlugin(),
+
+    new CopyWebpackPlugin([
+      {from: "src/assets", to: "assets"}
+    ])
   ]
 }

@@ -2,6 +2,8 @@ module App exposing (..)
 
 import Color exposing (Color, rgba)
 import Color.Convert
+import DefaultDict exposing (DefaultDict)
+import Dict exposing (Dict)
 import Element exposing (..)
 import Element.Attributes exposing (..)
 import Html
@@ -27,6 +29,7 @@ import Styles exposing (..)
 
 type alias Model =
     { route : Route
+    , menus : DefaultDict String Bool
     }
 
 
@@ -36,13 +39,13 @@ main =
         { init = init
         , update = update
         , view = view
-        , subscriptions = always Sub.none
+        , subscriptions = \_ -> Sub.none
         }
 
 
 init : Location -> ( Model, Cmd Msg )
 init location =
-    ( { route = Route.fromLocation location }
+    ( { route = Route.fromLocation location, menus = DefaultDict.empty False }
     , Cmd.none
     )
 
@@ -56,6 +59,16 @@ update msg model =
         SetRoute route ->
             setRoute route model
 
+        ToggleMenu key ->
+            ( { model | menus = DefaultDict.update key (not >> Just) model.menus }, Cmd.none )
+
+        MouseClick _ ->
+            ( resetMenus model, Cmd.none )
+
+
+resetMenus model =
+    { model | menus = DefaultDict.empty False }
+
 
 setRoute : Route -> Model -> ( Model, Cmd Msg )
 setRoute route model =
@@ -67,13 +80,13 @@ view model =
     Element.viewport Styles.stylesheet <|
         case model.route of
             Route.Feed ->
-                Page.Frame.view <|
+                Page.Frame.view model <|
                     Page.Feed.view
 
             Route.Conversation ->
-                Page.Frame.view <|
+                Page.Frame.view model <|
                     Page.Conversation.view
 
             Route.NotFound ->
-                Page.Frame.view <|
+                Page.Frame.view model <|
                     el None [] (text "not found")

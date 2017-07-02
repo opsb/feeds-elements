@@ -8,6 +8,7 @@ const AssetsPlugin = require('assets-webpack-plugin')
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin')
 const getClientEnvironment = require('./env')
 const configPaths = require('../config/paths')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -162,6 +163,10 @@ module.exports = {
       }
     }),
 
-    new ExtractTextPlugin('css/[name].[contenthash:8].css')
+    new ExtractTextPlugin('css/[name].[contenthash:8].css'),
+
+    new CopyWebpackPlugin([
+      {from: "src/assets", to: "assets"}
+    ])
   ]
 }
